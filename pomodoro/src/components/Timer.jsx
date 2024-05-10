@@ -29,6 +29,21 @@ export const Timer = () => {
 		setIsActive(false);
 	};
 
+	const handleMinuteChange = (event) => {
+		const newMinutes = Math.max(0, parseInt(event.target.value, 10));
+		if (!isActive) {
+			setMinutes(newMinutes);
+		}
+	};
+
+	const handleSecondChange = (event) => {
+		const newSeconds = Math.max(0, parseInt(event.target.value, 10));
+		newSeconds = Math.min(59, newSeconds);
+		if (!isActive) {
+			setSeconds(newSeconds);
+		}
+	};
+
 	useEffect(() => {
 		let interval = null;
 		if (isActive) {
@@ -55,9 +70,28 @@ export const Timer = () => {
 				</div>
 			</div>
 			<div className="timer">
-				<p>
-					{formatTime(minutes)}:{formatTime(seconds)}
-				</p>
+				{!isActive ? (
+					<>
+						<input
+							type="number"
+							value={minutes}
+							onChange={handleMinuteChange}
+							min="0"
+							style={{ width: "60px" }}
+						/>
+						:
+						<input
+							type="number"
+							value={seconds}
+							onChange={handleSecondChange}
+							min="00"
+							max="59"
+							style={{ width: "60px" }}
+						/>
+					</>
+				) : (
+					<p>{formatTime(minutes)}:{formatTime(seconds)}</p>
+				)}
 			</div>
 			<div className="start-stop">
 				<button onClick={toggleTimer}>{isActive ? "Stop" : "Start"}</button>

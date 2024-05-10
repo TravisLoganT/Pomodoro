@@ -37,7 +37,7 @@ export const Timer = () => {
 	};
 
 	const handleSecondChange = (event) => {
-		const newSeconds = Math.max(0, parseInt(event.target.value, 10));
+		let newSeconds = Math.max(0, parseInt(event.target.value, 10));
 		newSeconds = Math.min(59, newSeconds);
 		if (!isActive) {
 			setSeconds(newSeconds);
@@ -77,7 +77,8 @@ export const Timer = () => {
 							value={minutes}
 							onChange={handleMinuteChange}
 							min="0"
-							style={{ width: "60px" }}
+              style={{ width: "60px" }}
+              disabled={isActive}
 						/>
 						:
 						<input
@@ -86,7 +87,8 @@ export const Timer = () => {
 							onChange={handleSecondChange}
 							min="00"
 							max="59"
-							style={{ width: "60px" }}
+              style={{ width: "60px" }}
+              disabled={isActive}
 						/>
 					</>
 				) : (

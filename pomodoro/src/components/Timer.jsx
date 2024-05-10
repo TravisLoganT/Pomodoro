@@ -19,16 +19,14 @@ export const Timer = () => {
 		return time.toString().padStart(2, "0");
 	};
 
-	const startTimer = () => {
-		setIsActive(true);
-	};
-
-	const stopTimer = () => {
-		setIsActive(false);
-	};
-
 	const toggleTimer = () => {
 		setIsActive(!isActive);
+	};
+
+	const setTime = (mins) => {
+		setMinutes(mins);
+		setSeconds(0);
+		setIsActive(false);
 	};
 
 	useEffect(() => {
@@ -47,13 +45,13 @@ export const Timer = () => {
 		<div className="timer-container">
 			<div className="option-selection">
 				<div className="option">
-					<p>Pomodoro</p>
+					<button onClick={() => setTime(25)}>Pomodoro</button>
 				</div>
 				<div className="option">
-					<p>Short Break</p>
+					<button onClick={() => setTime(5)}>Short Break</button>
 				</div>
 				<div className="option">
-					<p>Long Break</p>
+					<button onClick={() => setTime(15)}>Long Break</button>
 				</div>
 			</div>
 			<div className="timer">

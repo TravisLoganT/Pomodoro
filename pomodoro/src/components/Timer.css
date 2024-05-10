@@ -1,0 +1,28 @@
+* {
+	box-sizing: border-box;
+	font-size: 1.2rem;
+}
+
+.timer-container {
+	margin: 2rem 10rem;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+    
+}
+
+.option-selection {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.option {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 2rem;
+}

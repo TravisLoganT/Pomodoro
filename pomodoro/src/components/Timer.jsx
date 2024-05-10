@@ -34,26 +34,16 @@ export const Timer = () => {
 		setIsActive(false);
 	};
 
-	const handleMinuteChange = (event) => {
-		const newValue = event.target.value;
-		setSeconds(validateTime(newValue, 59));
+	const handleMinutesChange = (event) => {
+		const newValue = event.target.value.replace(/[^0-9]/g, "");
+		setMinutes(newValue);
 	};
 
-	const handleSecondChange = (event) => {
-		const newValue = event.target.value;
-		setSeconds(validateTime(newValue, 59));
-	};
-
-	const validateTime = (value, max) => {
-		let num = parseInt(value, 10);
-		if (isNaN(num) || num < 0) {
-			return "00";
-		} else if (num > max) {
-			return formatTime(max);
-		} else {
-			return formatTime(num);
-		}
-	};
+	const handleSecondsChange = (event) => {
+		const newValue = event.target.value.replace(/[^0-9]/g, "");
+		setSeconds(newValue);
+  };
+  
 
 	useEffect(() => {
 		let interval = null;
@@ -61,11 +51,12 @@ export const Timer = () => {
 			interval = setInterval(() => {
 				decrementTime();
 			}, 1000);
-		} else if (!isActive && seconds !== 0) {
-			clearInterval(interval);
+		} else if (!isActive) {
+			setMinutes(formatTime(parseInt(minutes, 10)));
+			setSeconds(formatTime(parseInt(seconds, 10)));
 		}
 		return () => clearInterval(interval);
-	}, [decrementTime, isActive, seconds]);
+	}, [decrementTime, isActive, minutes, seconds]);
 
 	return (
 		<div className="timer-container">
@@ -87,8 +78,7 @@ export const Timer = () => {
 							className="input-minutes"
 							type="text"
 							value={minutes}
-							onChange={handleMinuteChange}
-							min="0"
+							onChange={handleMinutesChange}
 							disabled={isActive}
 						/>
 						:
@@ -96,9 +86,7 @@ export const Timer = () => {
 							className="input-seconds"
 							type="text"
 							value={seconds}
-							onChange={handleSecondChange}
-							min="00"
-							max="59"
+							onChange={handleSecondsChange}
 							disabled={isActive}
 						/>
 					</>

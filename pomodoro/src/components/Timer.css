@@ -9,7 +9,6 @@
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
-    
 }
 
 .option-selection {
@@ -25,4 +24,11 @@
 	flex-direction: column;
 	justify-content: center;
 	margin: 0 2rem;
+}
+
+.input-minutes,
+.input-seconds {
+	border: none;
+	width: 2.2rem;
+	text-align: center;
 }

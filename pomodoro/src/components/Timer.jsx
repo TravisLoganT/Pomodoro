@@ -2,16 +2,21 @@ import { React, useEffect, useState } from "react";
 import "./Timer.css";
 
 export const Timer = () => {
-	const [minutes, setMinutes] = useState(25);
-	const [seconds, setSeconds] = useState(0);
+	const [minutes, setMinutes] = useState("25");
+	const [seconds, setSeconds] = useState("00");
 	const [isActive, setIsActive] = useState(false);
 
 	const decrementTime = () => {
-		if (seconds > 0) {
-			setSeconds(seconds - 1);
-		} else if (minutes > 0 && seconds === 0) {
-			setMinutes(minutes - 1);
-			setSeconds(59);
+		let intMinutes = parseInt(minutes, 10);
+		let intSeconds = parseInt(seconds, 10);
+
+		if (intSeconds > 0) {
+			setSeconds(formatTime(intSeconds - 1));
+		} else if (intMinutes > 0 && intSeconds === 0) {
+			setMinutes(formatTime(intMinutes - 1));
+			setSeconds("59");
+		} else if (intMinutes === 0 && intSeconds === 0) {
+			setIsActive(false);
 		}
 	};
 
@@ -30,17 +35,23 @@ export const Timer = () => {
 	};
 
 	const handleMinuteChange = (event) => {
-		const newMinutes = Math.max(0, parseInt(event.target.value, 10));
-		if (!isActive) {
-			setMinutes(newMinutes);
-		}
+		const newValue = event.target.value;
+		setSeconds(validateTime(newValue, 59));
 	};
 
 	const handleSecondChange = (event) => {
-		let newSeconds = Math.max(0, parseInt(event.target.value, 10));
-		newSeconds = Math.min(59, newSeconds);
-		if (!isActive) {
-			setSeconds(newSeconds);
+		const newValue = event.target.value;
+		setSeconds(validateTime(newValue, 59));
+	};
+
+	const validateTime = (value, max) => {
+		let num = parseInt(value, 10);
+		if (isNaN(num) || num < 0) {
+			return "00";
+		} else if (num > max) {
+			return formatTime(max);
+		} else {
+			return formatTime(num);
 		}
 	};
 
@@ -54,7 +65,7 @@ export const Timer = () => {
 			clearInterval(interval);
 		}
 		return () => clearInterval(interval);
-	}, [isActive, seconds]);
+	}, [decrementTime, isActive, seconds]);
 
 	return (
 		<div className="timer-container">
@@ -73,26 +84,28 @@ export const Timer = () => {
 				{!isActive ? (
 					<>
 						<input
-							type="number"
+							className="input-minutes"
+							type="text"
 							value={minutes}
 							onChange={handleMinuteChange}
 							min="0"
-              style={{ width: "60px" }}
-              disabled={isActive}
+							disabled={isActive}
 						/>
 						:
 						<input
-							type="number"
+							className="input-seconds"
+							type="text"
 							value={seconds}
 							onChange={handleSecondChange}
 							min="00"
 							max="59"
-              style={{ width: "60px" }}
-              disabled={isActive}
+							disabled={isActive}
 						/>
 					</>
 				) : (
-					<p>{formatTime(minutes)}:{formatTime(seconds)}</p>
+					<p>
+						{formatTime(minutes)}:{formatTime(seconds)}
+					</p>
 				)}
 			</div>
 			<div className="start-stop">

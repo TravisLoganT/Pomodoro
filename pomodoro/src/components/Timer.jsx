@@ -42,8 +42,7 @@ export const Timer = () => {
 	const handleSecondsChange = (event) => {
 		const newValue = event.target.value.replace(/[^0-9]/g, "");
 		setSeconds(newValue);
-  };
-  
+	};
 
 	useEffect(() => {
 		let interval = null;
@@ -52,8 +51,8 @@ export const Timer = () => {
 				decrementTime();
 			}, 1000);
 		} else if (!isActive) {
-			setMinutes(formatTime(parseInt(minutes, 10)));
-			setSeconds(formatTime(parseInt(seconds, 10)));
+			setMinutes(formatTime(parseInt(minutes, 10) || 0));
+			setSeconds(formatTime(parseInt(seconds, 10) || 0));
 		}
 		return () => clearInterval(interval);
 	}, [decrementTime, isActive, minutes, seconds]);
